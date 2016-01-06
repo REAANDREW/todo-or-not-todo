@@ -1,0 +1,14 @@
+ {
+   "title": "TODO Schema",
+   "type": "object",
+   "title": {
+     "type": "string"
+   },
+   "complete": {
+     "type": "boolean"
+   },
+   "dateCreated": {
+     "format": "date-time",
+     "type": "string"
+   }
+ }
