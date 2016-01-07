@@ -1,18 +1,20 @@
 const http = require('http');
 
+const httpUtils = require('./lib/httpUtils');
+
 const hostname = '0.0.0.0';
 const port = 1337;
 
 const todos = [{
-	id : 1,
+  id: 1,
   title: 'Buy some milk',
   complete: false
 }, {
-	id : 2,
+  id: 2,
   title: 'Book appointment with the dentist',
   complete: false
 }, {
-	id : 3,
+  id: 3,
   title: 'Post the letter',
   complete: false
 }];
@@ -21,23 +23,17 @@ http.createServer((req, res) => {
   console.log(req);
   if (req.url === '/todos') {
     if (req.method == 'POST') {
-			var payload = new Buffer(0);
-
-			req.on('data', (data) => {
-				payload = Buffer.concat([payload, data]);
-			});
-
-			req.on('end', () => {
-					const todo = JSON.parse(payload);
-					todo.id = todos.length + 1;
-					todo.complete = false;
-					todos.push(todo);
-					res.writeHead(201, {
-		        'Content-Type': 'application/json',
-						'Location' : `/todos/${todo.id}`
-		      });
-		      res.end();
-			});
+      httpUtils.extractPostBody(req, (err, payload) => {
+        const todo = JSON.parse(payload);
+        todo.id = todos.length + 1;
+        todo.complete = false;
+        todos.push(todo);
+        res.writeHead(201, {
+          'Content-Type': 'application/json',
+          'Location': `/todos/${todo.id}`
+        });
+        res.end();
+      });
     } else {
       res.writeHead(200, {
         'Content-Type': 'application/json'
