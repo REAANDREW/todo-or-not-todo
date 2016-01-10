@@ -31,8 +31,12 @@ http.createServer((req, res) => {
       });
       res.end(JSON.stringify(todos));
     }
-  } else if (req.url.indexOf('/todos/') > -1 && req.method == 'GET') {
-    todoService.get(req, res);
+  } else if (req.url.indexOf('/todos/') > -1){
+    if(req.method === 'GET') {
+      todoService.get(req, res);
+    }else if(req.method === 'PUT'){
+      todoService.update(req,res);
+    }
   } else {
     res.writeHead(404);
     res.end();
