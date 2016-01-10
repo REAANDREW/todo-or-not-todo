@@ -36,6 +36,8 @@ http.createServer((req, res) => {
       todoService.get(req, res);
     }else if(req.method === 'PUT'){
       todoService.update(req,res);
+    }else if(req.method === 'DELETE'){
+      todoService.delete(req,res);
     }
   } else {
     res.writeHead(404);
